@@ -1,3 +1,5 @@
 #canvas{
     background-color: #000000;
+    image-rendering: pixelated; 
+    cursor: none;
 }

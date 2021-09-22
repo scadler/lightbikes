@@ -6,27 +6,47 @@ var bike = {
     y: 30,
     dirx: 3,
     diry: 0,
+    jump: 0,
+    jumpCooldown: 0,
 }
-function draw(x, y, inAir) {
-    ctx.strokeStyle = (inAir === 0) ? "#FFFFFF" : "#CCCCCC"
-    ctx.lineWidth = 2;
-    ctx.lineJoin = 'round'
+function draw(x, y, dirx, diry, jump) {
+    ctx.strokeStyle = (jump === 0) ? "#FFFFFF" :"#909090";
+    ctx.lineWidth = 4;
+    ctx.lineJoin = 'miter'
     ctx.beginPath();
-    ctx.moveTo(x + dirx/3, y - diry / 3);
-    ctx.lineTo(x + d.x, y + d.y);
+    ctx.moveTo(x - dirx*2/3, y - diry*2/3);
+    ctx.lineTo(x + dirx, y + diry);
     ctx.stroke()
-
+}
+function move(){
+    let height = (bike.jump !==0)? Math.round((8-(bike.jump-2))/4) : 0;
+    bike.x+=bike.dirx + (height*Math.abs(bike.diry/3));
+    bike.y+=bike.diry + (height*Math.abs(bike.dirx/3));
 }
 function step(){
-    draw(bike.x,bike.y,0)
+    draw(bike.x,bike.y,bike.dirx,bike.diry,bike.jump)
+    move()
+    if(bike.jump !== 0){
+        bike.jump-=1;
+        if(bike.jump < 0){
+            bike.jump = 0;
+        }
+    }
+    if(bike.jumpCooldown !==0){
+        bike.jumpCooldown-=1;
+        if(bike.jumpCooldown < 0){
+            bike.jumpCooldown = 0;
+        }
+    }
 }
-step()
-setInterval(step, 20)
 
+setInterval(step, 20)
+document.addEventListener('keydown', keyPressed)
 function keyPressed(e) {
+    console.log("works")
     key = e.key
-    // if (bike.airTime === 0 && bike.dead === false) {
-        if (key == "a" && bike.direction.x !== 3) {
+    if(bike.jump === 0){
+        if (key == "a" && bike.dirx !== 3) {
             bike.dirx = -3
             bike.diry = 0
         } else if (key == "d" && bike.dirx !== -3) {
@@ -39,8 +59,10 @@ function keyPressed(e) {
             bike.dirx = 0
             bike.diry = 3
         }
-        if (key == " ") {
+        if (key == " " && bike.jumpCooldown === 0) {
+            bike.jump=20;
+            bike.jumpCooldown=60;
             e.preventDefault();
         }
-    // }
+    }
 }
