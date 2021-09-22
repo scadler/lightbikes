@@ -1,0 +1,5 @@
+
+vscode:
+  extensions:
+    - ritwickdey.liveserver
+    - ms-vscode.live-server
