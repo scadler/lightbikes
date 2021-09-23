@@ -18,6 +18,10 @@ function draw(x, y, dirx, diry, jump) {
     ctx.moveTo(x - dirx*2/3, y - diry*2/3);
     ctx.lineTo(x + dirx, y + diry);
     ctx.stroke()
+    let dx = (dirx === 0) ? 1 : dirx;
+    let dy = (diry === 0) ? 1 : diry;
+    ctx.fillStyle = "#FF0000"
+    ctx.fillRect(x+dirx,y+diry,dx,dy)
 }
 function move(){
     let height = (bike.jump !==0)? Math.round((8-(bike.jump-2))/4) : 0;
@@ -25,7 +29,12 @@ function move(){
     bike.y+=bike.diry + (height*Math.abs(bike.dirx/3));
 }
 function collisionDetect(x,y,dirx,diry){
-    ctx.getImageData(sx, sy, sw, sh);
+    let dx = (dirx === 0) ? 1 : dirx;
+    let dy = (diry === 0) ? 1 : diry;
+    console.log(ctx.getImageData(x, y, dx, dy).data)
+    if(ctx.getImageData(x, y, dx, dy).data.includes(255)){
+        console.log("wsiwebfripweufyp")
+    }
 }
 
 function step(){
@@ -45,8 +54,8 @@ function step(){
         }
     }
 }
-
-setInterval(step, 20)
+step()
+// setInterval(step, 20)
 document.addEventListener('keydown', keyPressed)
 function keyPressed(e) {
     console.log("works")
