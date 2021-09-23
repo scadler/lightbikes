@@ -11,6 +11,7 @@ var bike = {
 }
 function draw(x, y, dirx, diry, jump) {
     ctx.strokeStyle = (jump === 0) ? "#FFFFFF" :"#909090";
+    ctx.globalCompositeOperation = (jump !== 0) ? "source-over" : "destination-over";
     ctx.lineWidth = 4;
     ctx.lineJoin = 'miter'
     ctx.beginPath();
@@ -23,9 +24,14 @@ function move(){
     bike.x+=bike.dirx + (height*Math.abs(bike.diry/3));
     bike.y+=bike.diry + (height*Math.abs(bike.dirx/3));
 }
+function collisionDetect(x,y,dirx,diry){
+    ctx.getImageData(sx, sy, sw, sh);
+}
+
 function step(){
     draw(bike.x,bike.y,bike.dirx,bike.diry,bike.jump)
     move()
+    collisionDetect(bike.x,bike.y,bike.dirx,bike.diry)
     if(bike.jump !== 0){
         bike.jump-=1;
         if(bike.jump < 0){
