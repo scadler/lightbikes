@@ -18,10 +18,13 @@ function draw(x, y, dirx, diry, jump) {
     ctx.moveTo(x - dirx*2/3, y - diry*2/3);
     ctx.lineTo(x + dirx, y + diry);
     ctx.stroke()
-    let dx = (dirx === 0) ? 1 : dirx;
-    let dy = (diry === 0) ? 1 : diry;
+    let dx = (dirx === 0) ? 1 : dirx*4/3;
+    let dy = (diry === 0) ? 1 : diry*4/3;
+    let cc = (diry >0) ? 3 : (diry < 0) ? -4 : 0;
+    let dd = (dirx >0) ? 3 : (dirx < 0) ? -4 : 0;
+
     ctx.fillStyle = "#FF0000"
-    ctx.fillRect(x+dirx,y+diry,dx,dy)
+    ctx.fillRect(x+dd-Math.ceil(cc/2),y+cc-Math.ceil(dd/2),dy,dx)
 }
 function move(){
     let height = (bike.jump !==0)? Math.round((8-(bike.jump-2))/4) : 0;
@@ -55,7 +58,7 @@ function step(){
     }
 }
 step()
-// setInterval(step, 20)
+ setInterval(step, 200)
 document.addEventListener('keydown', keyPressed)
 function keyPressed(e) {
     console.log("works")
